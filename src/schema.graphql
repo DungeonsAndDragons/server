@@ -1,0 +1,149 @@
+
+type Query {
+}
+
+type Mutation {
+}
+
+enum DieType {
+    D2,
+    D4,
+    D6,
+    D8,
+    D10,
+    D12,
+    D20,
+    D100
+}
+
+type DieThrow {
+    multiplier: Int,
+    type: DieType,
+    bonus: Int
+}
+
+# Representation of a real life person
+type Player {
+    id: ID!,
+    name: String!,
+    email: String,
+    characters: [Character!]!
+    isGM: Bool!,
+}
+
+# Unit for experience
+enum XPUnit {
+    Level,
+    Points
+}
+
+# Alignment
+enum Alignment {
+    LawfulGood,
+    LawfulNeutral,
+    LawfulEvil,
+    NeutralGood,
+    Neutral,
+    NeutralEvil,
+    ChaoticGood,
+    ChaoticNeutral,
+    ChaoticEvil
+}
+
+enum AbilityType {
+    Strength,
+    Dexterity,
+    Constitution,
+    Intelligence,
+    Wisdom,
+    Charisma
+}
+
+type Ability {
+    id: ID!,
+    type: AbilityType!,
+    score: Int,
+    modifier: Int
+}
+
+type SkillType {
+    id: ID!,
+    name: String!,
+    keyAbility: AbilityType!
+}
+
+type Skill {
+    id: ID!,
+    type: SkillType!,
+    proficiency: Bool!,
+    modifier: Int!
+}
+
+type SavingThrow {
+    id: ID!,
+    type: AbilityType!
+    proficiency: Bool!,
+    modifier: Int!
+}
+
+type Class {
+    id: ID!,
+    name: String!,
+    type: String!,
+    alignments: [Alignment!]!,
+    hitDie: DieType!,
+    fullText: String
+}
+
+type Health {
+    maximum: Int,
+    current: Int!,
+    temporary: Int!
+}
+
+# Player controlled entity within the world
+type Character {
+    id: ID!,
+
+    name: String!,
+    experience(unit: XPUnit = Level): Int!,
+    alignment: Alignment
+
+    class: Class,
+
+    proficiencyBonus: Int,
+    savingThrows: [SavingThrow!]!,
+    skills: [Skill!]!,
+    abilities: [Ability!]!,
+
+    armorClass: Int,
+    initiative: Int,
+    speed: Int,
+    health: Health!
+
+    deathSaveSuccesses: Int!,
+    deathSaveFailures: Int!,
+
+    traits: String!,
+    ideals: String!,
+    bonds: String!,
+    flaws: String!,
+
+    proficiencies: String!,
+    features: String!,
+
+    age: Integer!,
+    height: Float!,
+    weight: Integer!,
+    eyes: String!,
+    skin: String!,
+    hair: String!,
+
+    lore: String!,
+
+    # items
+    # race TBD
+    # background TBD
+
+    player: Player!
+}
