@@ -5,7 +5,9 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { makeExecutableSchema } from 'graphql-tools'
 import { combineResolvers } from 'graphql-resolvers'
 
-import { database } from './db';
+import { database, initializeDatabase } from './db';
+
+initializeDatabase();
 
 // Some fake data
 const books = [
