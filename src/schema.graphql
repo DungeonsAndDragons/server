@@ -16,10 +16,16 @@ enum DieType {
     D100
 }
 
-type DieThrow {
+type DiceThrow {
     multiplier: Int,
     type: DieType,
     bonus: Int
+}
+
+type Money {
+    copper: Integer!,
+    silver: Integer!,
+    gold: Integer!,
 }
 
 # Representation of a real life person
@@ -92,13 +98,64 @@ type Class {
     type: String!,
     alignments: [Alignment!]!,
     hitDie: DieType!,
-    fullText: String
+    fullText: String!
 }
 
 type Health {
+    id: ID!,
     maximum: Int,
     current: Int!,
     temporary: Int!
+}
+
+interface InventoryItem {
+    id: ID!,
+    name: String!,
+    category: String!,
+    weight: Integer!,
+    fullText: String!
+}
+
+type Item implements InventoryItem {
+    id: ID!,
+    name: String!,
+    category: String!,
+    specialAbility: String,
+    fullText: String!
+}
+
+type Equipment implements InventoryItem { # TODO Missing some fields
+    id: ID!,
+    name: String!,
+    family: String!, # e.g. Weapons
+    category: String!, # e.g. Simple Weapons
+    subcategory: String!, # e.g. Ranged Weapons
+    cost: Money!,
+    weigth: Integer!,
+    damage: DiceThrow,
+    damageType: String,
+    criticalMultiplier: Integer,
+    fullText: String
+}
+
+type InventoryEntry {
+    id: ID!,
+    item: IntentoryItem!,
+    amount: Integer!,
+    totalWeight: Integer!
+}
+
+type Spell {
+    id: ID!,
+    name: String!,
+    school: String!,
+    subschool: String!,
+    level: String!,
+    castingTime: String!,
+    range: String!,
+    duration: String!,
+    description: String!,
+    scaling: String! # what happens when you use a higher lvl spell slot
 }
 
 # Player controlled entity within the world
@@ -141,7 +198,10 @@ type Character {
 
     lore: String!,
 
-    # items
+    money: Money!,
+    inventory: [InventoryEntry!]!
+    spells: [Spell!]!
+
     # race TBD
     # background TBD
 
