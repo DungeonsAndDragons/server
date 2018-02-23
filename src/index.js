@@ -3,11 +3,9 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { makeExecutableSchema } from 'graphql-tools'
+import { combineResolvers } from 'graphql-resolvers'
 
-import { connect, disconnect } from './db';
-
-// Connect to the DB
-connect();
+import { database } from './db';
 
 // Some fake data
 const books = [
@@ -31,15 +29,28 @@ function book(parent, args, context, info) {
 // The GraphQL schema in string form
 const typeDefs = fs.readFileSync('src/schemes/schema.graphql', 'utf8');
 
+const isAuthenticated = (root, args, context, info) => {
+    if (!context.user) {
+        return new Error('Not authenticated')
+    }
+}
+
 // The resolvers
 const resolvers = {
     Query: {
-        dies: () => "D20"
+        dies: async (_, args, context) => {
+            try {
+              const db = await database;
+              const [post, categories] = await Promise.all([
+                db.get('SELECT * FROM Post WHERE id = ?', "someID"), // use args.id
+                db.all('SELECT * FROM Category')
+              ]);
+              res.render('post', { post, categories });
+            } catch (err) {
+              return err; // new Error('Oh noes! Something went wrong ...');
+            }
+        }
     }
-    // Query: { books: (_, args) => {
-    //     console.log(args);
-    //     return books;
-    // }},
     // Mutation: { book }
 };
 
@@ -53,7 +64,18 @@ const schema = makeExecutableSchema({
 const app = express();
 
 // The GraphQL endpoint
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
+app.use(
+    '/graphql',
+    bodyParser.json(),
+    graphqlExpress(req => {
+        return {
+            schema: schema,
+            context: {
+                authorization: req.headers.authorization,
+            }
+        };
+    }),
+);
 
 // GraphiQL, a visual editor for queries
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
