@@ -5,6 +5,7 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { makeExecutableSchema } from 'graphql-tools'
 import { combineResolvers } from 'graphql-resolvers'
 
+import config from '../config.json'
 import { database, initializeDatabase } from './db';
 
 initializeDatabase();
@@ -29,7 +30,7 @@ function book(parent, args, context, info) {
 }
 
 // The GraphQL schema in string form
-const typeDefs = fs.readFileSync('src/schemes/schema.graphql', 'utf8');
+const typeDefs = fs.readFileSync(config.graphQL.schema, 'utf8');
 
 const isAuthenticated = (root, args, context, info) => {
     if (!context.user) {

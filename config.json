@@ -1,5 +1,9 @@
 {
     "database": {
+        "tables": "schemes/database/tables",
         "url": ":memory:"
+    },
+    "graphQL": {
+        "schema": "schemes/graphql/schema.graphql"
     }
 }
