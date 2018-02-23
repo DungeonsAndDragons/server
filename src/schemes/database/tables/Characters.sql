@@ -5,9 +5,6 @@ CREATE TABLE Characters(
     alignment          INTEGER,
     class              INTEGER REFERENCES Classes,
     proficiencyBonus   INTEGER,
-    savingThrows       *TODO*,
-    skills             *TODO*,
-    abilities          *TODO*,
     armorClass         INTEGER,
     initiative         INTEGER,
     speed              INTEGER,
@@ -28,7 +25,6 @@ CREATE TABLE Characters(
     hair               TEXT,
     lore               TEXT,
     money              INTEGER REFERENCES Money,
-    inventory          *TODO*,
     spells             *TODO*,
     player             INTEGER REFERENCES Players
 );
