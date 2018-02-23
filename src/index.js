@@ -35,7 +35,7 @@ function book(parent, args, context, info) {
 }
 
 // The GraphQL schema in string form
-const typeDefs = fs.readFileSync('src/schema.graphql', 'utf8');
+const typeDefs = fs.readFileSync('src/schemes/schema.graphql', 'utf8');
 
 // The resolvers
 const resolvers = {
