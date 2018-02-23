@@ -1,4 +1,6 @@
-const sqlite3 = require('sqlite3').verbose();
+import sqlite3 from 'sqlite3'
+
+import config from '../config.json'
 
 let db = null;
 
@@ -10,10 +12,19 @@ export const connect = () => {
 
     console.log("Connecting to database ...");
 
-    db = new sqlite3.Database(':memory:', (err) => {
+    db = new sqlite3.Database(config.database.url, (err) => {
         if (err) {
             return console.error(err.message);
         }
-        console.log('Connected to the in-memory SQlite database.');
+        console.log(`Connected to SQlite database at '${config.database.url}'.`);
+    });
+}
+
+export const disconnect = () => {
+    return new Promise((resolve, reject) => {
+        db.close((err) => {
+          if (err) reject(err)
+          else resolve('Closed the database connection.');
+        });
     });
 }

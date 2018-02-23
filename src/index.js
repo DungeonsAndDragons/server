@@ -1,16 +1,10 @@
-// const fs = require('fs');
-// const express = require('express');
-// const bodyParser = require('body-parser');
-// const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
-// const { makeExecutableSchema } = require('graphql-tools');
+import fs from 'fs'
+import express from 'express'
+import bodyParser from 'body-parser'
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
+import { makeExecutableSchema } from 'graphql-tools'
 
-import fs from 'fs';
-import express from 'express';
-import bodyParser from 'body-parser';
-import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
-import { makeExecutableSchema } from 'graphql-tools';
-
-import { connect } from './db';
+import { connect, disconnect } from './db';
 
 // Connect to the DB
 connect();
