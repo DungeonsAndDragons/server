@@ -1,0 +1,15 @@
+# SQLite3 DB Tables
+ - DiceThrows
+ - Money
+ - Players
+ - Abilities
+ - SkillTypes
+ - Skills
+ - SavingThrows
+ - Classes
+ - Health
+ - Items
+ - Equipment
+ - InventoryEntries
+ - Spells
+ - Characters

@@ -18,12 +18,14 @@ enum DieType {
 }
 
 type DiceThrow {
-    multiplier: Int,
-    type: DieType,
-    bonus: Int
+    id: ID!,
+    multiplier: Int!,
+    type: DieType!,
+    modifier: Int!
 }
 
 type Money {
+    id: ID!,
     copper: Int!,
     silver: Int!,
     gold: Int!
