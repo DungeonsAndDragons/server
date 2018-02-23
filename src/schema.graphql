@@ -1,9 +1,10 @@
 
 type Query {
+    dies: DieType
 }
-
-type Mutation {
-}
+#
+# type Mutation {
+# }
 
 enum DieType {
     D2,
@@ -23,9 +24,9 @@ type DiceThrow {
 }
 
 type Money {
-    copper: Integer!,
-    silver: Integer!,
-    gold: Integer!,
+    copper: Int!,
+    silver: Int!,
+    gold: Int!
 }
 
 # Representation of a real life person
@@ -33,8 +34,8 @@ type Player {
     id: ID!,
     name: String!,
     email: String,
-    characters: [Character!]!
-    isGM: Bool!,
+    characters: [Character!]!,
+    isGM: Boolean!
 }
 
 # Unit for experience
@@ -81,14 +82,14 @@ type SkillType {
 type Skill {
     id: ID!,
     type: SkillType!,
-    proficiency: Bool!,
+    proficiency: Boolean!,
     modifier: Int!
 }
 
 type SavingThrow {
     id: ID!,
-    type: AbilityType!
-    proficiency: Bool!,
+    type: AbilityType!,
+    proficiency: Boolean!,
     modifier: Int!
 }
 
@@ -112,7 +113,7 @@ interface InventoryItem {
     id: ID!,
     name: String!,
     category: String!,
-    weight: Integer!,
+    weight: Int!,
     fullText: String!
 }
 
@@ -120,6 +121,7 @@ type Item implements InventoryItem {
     id: ID!,
     name: String!,
     category: String!,
+    weight: Int!,
     specialAbility: String,
     fullText: String!
 }
@@ -131,18 +133,18 @@ type Equipment implements InventoryItem { # TODO Missing some fields
     category: String!, # e.g. Simple Weapons
     subcategory: String!, # e.g. Ranged Weapons
     cost: Money!,
-    weigth: Integer!,
+    weight: Int!,
     damage: DiceThrow,
     damageType: String,
-    criticalMultiplier: Integer,
-    fullText: String
+    criticalMultiplier: Int,
+    fullText: String!
 }
 
 type InventoryEntry {
     id: ID!,
-    item: IntentoryItem!,
-    amount: Integer!,
-    totalWeight: Integer!
+    item: InventoryItem!,
+    amount: Int!,
+    totalWeight: Int!
 }
 
 type Spell {
@@ -164,7 +166,7 @@ type Character {
 
     name: String!,
     experience(unit: XPUnit = Level): Int!,
-    alignment: Alignment
+    alignment: Alignment,
 
     class: Class,
 
@@ -176,7 +178,7 @@ type Character {
     armorClass: Int,
     initiative: Int,
     speed: Int,
-    health: Health!
+    health: Health!,
 
     deathSaveSuccesses: Int!,
     deathSaveFailures: Int!,
@@ -189,9 +191,9 @@ type Character {
     proficiencies: String!,
     features: String!,
 
-    age: Integer!,
+    age: Int!,
     height: Float!,
-    weight: Integer!,
+    weight: Int!,
     eyes: String!,
     skin: String!,
     hair: String!,
@@ -199,8 +201,8 @@ type Character {
     lore: String!,
 
     money: Money!,
-    inventory: [InventoryEntry!]!
-    spells: [Spell!]!
+    inventory: [InventoryEntry!]!,
+    spells: [Spell!]!,
 
     # race TBD
     # background TBD

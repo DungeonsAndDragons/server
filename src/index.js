@@ -28,11 +28,14 @@ const typeDefs = fs.readFileSync('src/schema.graphql', 'utf8');
 
 // The resolvers
 const resolvers = {
-    Query: { books: (_, args) => {
-        console.log(args);
-        return books;
-    }},
-    Mutation: { book }
+    Query: {
+        dies: () => "D20"
+    }
+    // Query: { books: (_, args) => {
+    //     console.log(args);
+    //     return books;
+    // }},
+    // Mutation: { book }
 };
 
 // Put together a schema
