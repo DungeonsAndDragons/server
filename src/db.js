@@ -1,20 +1,25 @@
 import sqlite from 'sqlite'
 import fs from 'fs-extra'
 import path from 'path'
+import { initializeDatabase } from './dbInit'
 
 import config from '../config.json'
 
-export const database = sqlite.open(config.database.url);
+export const dbURL = process.env.NODE_ENV === 'production' ? config.database.url : ':memory:';
 
-export const initializeDatabase = async () => {
-    const db = await database;
-    const directoryListing = await fs.readdir(config.database.tables);
+export const database = sqlite.open(dbURL).catch((err) => {
+    console.error("Failed to open database");
+    console.error(err);
+    process.exit(1);
+});
 
-    const createPromises = Promise.all(directoryListing.map(async (tableFile) => {
-        const createTableSQL = await fs.readFile(path.join(config.database.tables, tableFile), 'utf-8');
-        console.log(`Creating table ${tableFile} ...`);
-        db.run(createTableSQL).catch((err) => {
-            throw new Error(`Failed to create table ${tableFile} - ${err.message}`)
+if (process.env.NODE_ENV !== 'production') {
+    console.warn("Not running in production. Initializing memory DB ...");
+    database.then((db) => {
+        initializeDatabase(db).catch((err) => {
+            console.error("Failed to create database!");
+            console.error(err);
+            process.exit(1);
         });
-    }));
+    });
 }

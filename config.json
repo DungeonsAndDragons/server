@@ -1,7 +1,6 @@
 {
     "database": {
-        "tables": "schemes/database/tables",
-        "url": ":memory:"
+        "url": "dist/dnd.db"
     },
     "graphQL": {
         "schema": "schemes/graphql/schema.graphql"
