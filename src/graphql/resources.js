@@ -16,7 +16,7 @@ export function serveGraphQL(app) {
             return {
                 schema: schema,
                 context: {
-                    authorization: req.headers.authorization,
+                    authorization: req.token,
                 }
             };
         }),
