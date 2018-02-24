@@ -3,6 +3,7 @@
         "url": "dist/dnd.db"
     },
     "graphQL": {
-        "schema": "schemes/graphql/schema.graphql"
+        "schema": "schemes/graphql/schema.graphql",
+        "url": "/graphql"
     }
 }
