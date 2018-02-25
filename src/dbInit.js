@@ -14,6 +14,6 @@ function executeFilesInDirectory(db, directory) {
 }
 
 export async function initializeDatabase(db) {
-    await executeFilesInDirectory(db, 'schemes/database/tables');
-    await executeFilesInDirectory(db, 'schemes/database/data');
+    await executeFilesInDirectory(db, 'schemes/database/tables').catch(console.error);
+    await executeFilesInDirectory(db, 'schemes/database/data').catch(console.error);
 }
