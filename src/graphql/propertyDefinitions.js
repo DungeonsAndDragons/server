@@ -7,7 +7,13 @@ export const Player = {
 
 export const Character = {
     table: 'Characters',
-    propertyMap: {}
+    propertyMap: {
+        health: { reference: 'Health' },
+        money: { reference: 'Money' },
+        // race: { reference: 'Races' },
+        // subrace: { reference: 'Subraces'},
+        player: { reference: 'Players' }
+    }
 }
 
 export const Class = {

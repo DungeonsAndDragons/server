@@ -1,8 +1,15 @@
 import { resolveToDB } from '../helpers/dbDirect'
-import { Player } from '../propertyDefinitions'
 
 export default {
-    player: resolveToDB(Player.table, Player.propertyMap, {
-        id: (parent, args, context) => parent.player
-    }, true)
+    // TODO Implement these:
+    // classes: ...,
+    // savingThrows: ...,
+    // skills: ...,
+    // abilities: ...,
+    // inventory: ...,
+    // spells: ...
+    // Based on this:
+        // characters: resolveToDB(Character.table, Character.propertyMap, {
+        //     player: (parent, args, context) => parent.id
+        // })
 }
