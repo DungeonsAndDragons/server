@@ -1,4 +1,4 @@
-import { sign, verify } from 'jsonwebtoken'
+import { sign, verify, decode } from 'jsonwebtoken'
 import bearerToken from 'express-bearer-token'
 
 import config from '../../config.json'
@@ -30,4 +30,8 @@ export function registerTokenResource(app) {
 
 export function verifyToken(token) {
     return verify(token, secret);
+}
+
+export function getTokenData(token) {
+    return decode(token);
 }

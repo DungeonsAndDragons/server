@@ -1,14 +1,19 @@
 import fs from 'fs'
-import { makeExecutableSchema } from 'graphql-tools'
+import { makeExecutableSchema, addResolveFunctionsToSchema } from 'graphql-tools'
 
 import config from '../../config.json'
-import { Query } from './resolvers/query'
-import { wrapInTokenVerification, tokenResolver } from './resolvers/authentication'
+import { wrapInTokenVerification, tokenResolver } from './helpers/authentication'
+
+// Resolvers
+import Query from './resolvers/Query'
+import Player from './resolvers/Player'
+import Character from './resolvers/Character'
 
 const typeDefs = fs.readFileSync(config.graphQL.schema, 'utf8');
-
 const resolvers = wrapInTokenVerification({
-    Query
+    Query,
+    Player,
+    Character
 });
 
 resolvers['Query']['token'] = tokenResolver;

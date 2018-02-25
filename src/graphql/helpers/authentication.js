@@ -1,6 +1,6 @@
 import { combineResolvers } from 'graphql-resolvers'
 
-import { verifyToken, generateToken } from '../../authentication/token'
+import { verifyToken, generateToken, getTokenData } from '../../authentication/token'
 
 const tokenIsValid = (root, args, context, info) => {
     const token = context.authorization;
@@ -22,4 +22,8 @@ export function wrapInTokenVerification(resolvers) {
 
 export function tokenResolver(root, args, context, info) {
     return generateToken(args.username, args.password);
+}
+
+export function getPlayerID(context) {
+    return getTokenData(context.authorization).id;
 }
