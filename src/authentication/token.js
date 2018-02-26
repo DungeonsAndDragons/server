@@ -24,6 +24,12 @@ export async function generateToken(username, pwd) {
     }
 }
 
+export function refreshToken(oldToken) {
+    if (verifyToken(oldToken)) {
+        return sign(decode(oldToken), secret, { expiresIn: config.token.validityPeriod });
+    }
+}
+
 export function registerTokenResource(app) {
     app.use(bearerToken());
 }
