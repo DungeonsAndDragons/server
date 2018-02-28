@@ -10,6 +10,10 @@ export function generateDevelopmentToken() {
     return sign({ id: 1 }, secret);
 }
 
+export function createAndSignToken(userID) {
+    return sign({ id: userID }, secret, { expiresIn: config.token.validityPeriod })
+}
+
 export async function generateToken(username, pwd) {
     try {
         const db = await database;
@@ -17,8 +21,7 @@ export async function generateToken(username, pwd) {
 
         if (password !== pwd) throw new Error("Invalid password");
 
-        const token = sign({ id }, secret, { expiresIn: config.token.validityPeriod });
-        return token;
+        return createAndSignToken(id);
     } catch (err) {
         return new Error("Unknown player or invalid password.")
     }
@@ -26,7 +29,7 @@ export async function generateToken(username, pwd) {
 
 export function refreshToken(oldToken) {
     if (verifyToken(oldToken)) {
-        return sign(decode(oldToken), secret, { expiresIn: config.token.validityPeriod });
+        return createAndSignToken(decode(oldToken).id);
     }
 }
 
