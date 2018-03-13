@@ -5,6 +5,7 @@ import cors from 'cors'
 import { logger, attachLogger } from './log'
 import { registerTokenResource, generateDevelopmentToken } from './authentication/token'
 import { serveGraphQL, serveGraphIQL } from './graphql/resources'
+import {serveBinaryResources} from "./binaryStorage/resources";
 
 // Initialize the app
 const app = express();
@@ -28,6 +29,9 @@ if (process.env.NODE_ENV !== 'production') {
 
 // GraphQL API
 serveGraphQL(app);
+
+// Binary data API
+serveBinaryResources(app);
 
 // Start the server
 app.listen(3000, () => {

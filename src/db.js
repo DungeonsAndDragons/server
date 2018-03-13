@@ -1,6 +1,4 @@
 import sqlite from 'sqlite'
-import fs from 'fs-extra'
-import path from 'path'
 import { initializeDatabase } from './dbInit'
 
 import { logger as log } from './log'

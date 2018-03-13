@@ -1,6 +1,7 @@
 {
     "database": {
-        "url": "ddist/dnd.db"
+        "url": "dist/dnd.db",
+        "bin": "dist/bin"
     },
     "graphQL": {
         "schema": "schemes/graphql/schema.graphql",

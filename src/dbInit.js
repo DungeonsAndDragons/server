@@ -1,5 +1,4 @@
-import sqlite from 'sqlite'
-import fs from 'fs-extra'
+import fs from 'mz/fs'
 import path from 'path'
 
 function executeFilesInDirectory(db, directory) {
