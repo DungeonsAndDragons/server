@@ -20,11 +20,11 @@ async function processProperties(db, parent, args, context, propertyMap, entry) 
 function buildSQL(tableName, filter, parent, args, context) {
     // Start off w/ basic SQL
     let sql = `SELECT * FROM ${tableName}`;
+    let where = ' WHERE ';
 
     // Check if any filters are defined and if so, resolve their values
     let filterValues = [];
     if (Object.keys(filter).length) {
-        sql += ' WHERE '
 
         let first = true;
         for (let property in filter) {
@@ -34,13 +34,18 @@ function buildSQL(tableName, filter, parent, args, context) {
                             ? filter[property](parent, args, context)
                             : filter[property];
 
-            if (first) first = false;
-            else sql += ', '
+            if (!value) continue;
 
-            sql += `${property} = ?`
+            if (first) first = false;
+            else where += ', ';
+
+            where += `${property} = ?`;
             filterValues.push(value);
         }
     }
+
+    if (filterValues.length > 0)
+        sql += where;
 
     return { sql, filterValues };
 }

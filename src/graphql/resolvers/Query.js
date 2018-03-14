@@ -9,5 +9,7 @@ export default {
     classes: resolveToDB(Class.table, Class.propertyMap),
     items: resolveToDB(Item.table, Item.propertyMap),
     players: resolveToDB(Player.table, Player.propertyMap),
-    characters: resolveToDB(Character.table, Character.propertyMap)
+    characters: resolveToDB(Character.table, Character.propertyMap, {
+        id: (_, args) => args.id
+    })
 };
