@@ -1,0 +1,6 @@
+import { dbReference } from '../helpers/dbDirect'
+import { Spell } from "../propertyDefinitions";
+
+export default {
+    spell: dbReference(Spell, 'spell')
+}

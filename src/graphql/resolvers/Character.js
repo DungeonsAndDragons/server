@@ -1,15 +1,18 @@
-import { resolveToDB } from '../helpers/dbDirect'
+import { dbReference } from '../helpers/dbDirect'
+import { InventoryEntry, SavingThrow, Skill, Ability, Health, Money, SelectedSpell, Player } from "../propertyDefinitions";
 
 export default {
-    // TODO Implement these:
-    // classes: ...,
-    // savingThrows: ...,
-    // skills: ...,
-    // abilities: ...,
-    // inventory: ...,
-    // spells: ...
-    // Based on this:
-        // characters: resolveToDB(Character.table, Character.propertyMap, {
-        //     player: (parent, args, context) => parent.id
-        // })
+    // classes: ..., TODO Implement classes
+
+    savingThrows: dbReference(SavingThrow, 'id', 'character', false),
+    skills: dbReference(Skill, 'id', 'character', false),
+    abilities: dbReference(Ability, 'ability'),
+
+    health: dbReference(Health, 'health'),
+
+    money: dbReference(Money, 'money'),
+    inventory: dbReference(InventoryEntry, 'id', 'character', false),
+    spells: dbReference(SelectedSpell, 'id', 'character', false),
+
+    player: dbReference(Player, 'player')
 }

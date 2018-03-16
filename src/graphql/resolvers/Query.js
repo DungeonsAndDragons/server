@@ -5,11 +5,11 @@ import { Spell, Class, Item, Player, Character } from '../propertyDefinitions'
 
 export default {
     refreshToken: (_, args, context) => refreshToken(context.authorization),
-    spells: resolveToDB(Spell.table, Spell.propertyMap),
-    classes: resolveToDB(Class.table, Class.propertyMap),
-    items: resolveToDB(Item.table, Item.propertyMap),
-    players: resolveToDB(Player.table, Player.propertyMap),
-    characters: resolveToDB(Character.table, Character.propertyMap, {
+    spells: resolveToDB(Spell),
+    classes: resolveToDB(Class),
+    items: resolveToDB(Item),
+    players: resolveToDB(Player),
+    characters: resolveToDB(Character, {
         id: (_, args) => args.id
     })
 };

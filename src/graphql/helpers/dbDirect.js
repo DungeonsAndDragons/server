@@ -1,6 +1,7 @@
 import { database } from '../../db'
+import { logger } from '../../log'
 
-async function processProperties(db, parent, args, context, propertyMap, entry) {
+async function processProperties(parent, args, context, propertyMap, entry) {
     for (let property in propertyMap) {
         if (!propertyMap.hasOwnProperty(property)) continue;
 
@@ -8,10 +9,10 @@ async function processProperties(db, parent, args, context, propertyMap, entry) 
                                 ? propertyMap[property](parent, args, context, entry)
                                 : propertyMap[property];
         if (!propSettings) continue;
-        if (propSettings.reference)
-            entry[property] = await db.get(`SELECT * FROM ${propSettings.reference} WHERE id = ?`, entry[property]);
         if (propSettings.protected)
             delete entry[property];
+        if (propSettings.value)
+            entry[property] = propSettings.value
     }
 
     return entry;
@@ -47,24 +48,44 @@ function buildSQL(tableName, filter, parent, args, context) {
     if (filterValues.length > 0)
         sql += where;
 
+    logger.debug("Executing: %s\t[ %s ]", sql, filterValues);
+
     return { sql, filterValues };
 }
 
-export function resolveToDB(tableName, propertyMap, filter, singleResult = false) {
+export function resolveToDB(propertyDefinition, filter, singleResult = false) {
     if (!filter) filter = {};
+
+    const tableName = propertyDefinition.table;
+    const propertyMap = propertyDefinition.propertyMap ? propertyDefinition.propertyMap : {};
+
     return async (parent, args, context) => {
+
+        const resultProcessor = (result) => {
+            if (typeof propertyDefinition.mapResult === 'function')
+                result = propertyDefinition.mapResult(result);
+            return processProperties(parent, args, context, propertyMap, result)
+        };
+
         try {
             const db = await database;
             const { sql, filterValues } = buildSQL(tableName, filter, parent, args, context);
             if (singleResult) {
                 const result = await db.get(sql, filterValues);
-                return processProperties(db, parent, args, context, propertyMap, result);
+                return resultProcessor(result);
             } else {
                 const results = await db.all(sql, filterValues);
-                return results.map((result) => processProperties(db, parent, args, context, propertyMap, result));
+                return results.map(resultProcessor);
             }
         } catch (err) {
             return err;
         }
     }
+}
+
+export function dbReference(propertyDefinition, parentProperty, childProperty = 'id', singleResult = true) {
+    const filter = {};
+    filter[childProperty] = (parent) => parent[parentProperty];
+
+    return resolveToDB(propertyDefinition, filter, singleResult)
 }
